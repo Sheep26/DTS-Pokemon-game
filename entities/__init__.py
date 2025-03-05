@@ -1,10 +1,21 @@
-from attack import *
 from enum import Enum
+
+class Attack:
+    name: str
+    damage: int
+    accuracy: int
+    
+    def __init__(self, name, damage, accuracy):
+        self.name = name
+        self.damage = damage
+        self.accuracy = accuracy
 
 class Entity:
     name: str
     hp: int
     max_hp: int
+    x: int
+    y: int
 
     def __init__(self) -> None:
         pass
@@ -23,23 +34,30 @@ class Entity:
         if self.hp < 0:
             self.hp = 0
     
+    def get_x(self) -> int:
+        return self.x
+    
+    def get_y(self) -> int:
+        return self.y
 
-class PokemonType(Enum):
-    PIKACHU = 0
-    CHARMANDER = 1
-    SQUIRTLE = 2
-    BULBASAUR = 3
+    def set_x(self, x: int) -> None:
+        self.x = x
+    
+    def set_y(self, y: int) -> None:
+        self.y = y
 
 class Pokemon(Entity):
-    pokemon_type: PokemonType
     attacks: list[Attack]
+    level: int
+    exp: int
 
-    def __init__(self, name: str, max_hp: int, hp: int, attacks: list[Attack], pokemon_type: PokemonType):
+    def __init__(self, name: str, max_hp: int, hp: int, level: int, exp: int, attacks: list[Attack]):
         self.name = name
         self.max_hp = max_hp
         self.hp = hp
         self.attacks = attacks
-        self.pokemon_type = pokemon_type
+        self.level = level
+        self.exp = exp
     
     def get_name(self) -> str:
         if self.name == "":
@@ -55,3 +73,16 @@ class Player(Entity):
     def __init__(self, name: str, pokemon: Pokemon):
         self.name = name
         self.pokemon = pokemon
+
+class Pikachu(Pokemon):
+    def __init__(self, level: int, exp: int):
+        super().__init__("Pikachu", 250, 250, level, exp, [
+            Attack("Thunder Shock", 40, 100),
+            Attack("Quick Attack", 40, 100),
+            Attack("Thunderbolt", 90, 100),
+            Attack("Thunder", 110, 70)
+        ])
+
+pokemon: dict[Pokemon] = {
+    "Pikachu": Pikachu,
+}
