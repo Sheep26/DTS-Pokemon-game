@@ -1,5 +1,5 @@
 from enum import Enum
-import random
+from random import choice, randint
 
 class PokemonType(Enum):
     NORMAL = 0
@@ -89,10 +89,13 @@ class Pokemon(Entity):
         self.attack_dmg = attack_dmg
 
     def attack(self, move: Attack, target: Entity) -> bool:
-        missed = random.randint(0, 100) > move.accuracy
+        missed = randint(0, 100) > move.accuracy
         if missed: return False
         target.take_damage(self.attack_dmg * (move.damage/100))
         return True
+
+    def pick_attack(self) -> Attack:
+        return choice(list(self.attacks.values()))
     
     def get_type(self) -> PokemonType:
         return self.pokemon_type
@@ -113,17 +116,17 @@ class Pikachu(Pokemon):
             Attack("Thunder Shock", 40, 100),
             Attack("Quick Attack", 40, 100),
             Attack("Thunderbolt", 90, 100),
-            Attack("Thunder", 110, 70)
+            Attack("Thunder", 110, 70),
         ])
 
 class Charmander(Pokemon):
     def __init__(self, level: int, exp: int):
-        super().__init__("Charmander", 39, level, exp, (1 * (0.25 * level)) * 100, PokemonType.FIRE, 52, [
-            Attack("Ember", 40, 100),
-            Attack("Scratch", 40, 100),
-            Attack("Flamethrower", 90, 100),
-            Attack("Inferno", 100, 50)
-        ])
+        super().__init__("Charmander", 39, level, exp, (1 * (0.25 * level)) * 100, PokemonType.FIRE, 52, {
+            "Ember": Attack("Ember", 40, 100),
+            "Scratch": Attack("Scratch", 40, 100),
+            "Flamethrower": Attack("Flamethrower", 90, 100),
+            "Inferno": Attack("Inferno", 100, 50),
+        })
 
 pokemon: dict[Pokemon] = {
     "Pikachu": Pikachu,

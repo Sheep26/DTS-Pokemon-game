@@ -1,27 +1,58 @@
 from entities import pokemon, Pokemon, Player
 from msvcrt import getch
 from battletimer import Timer
-from _thread import start_new_thread
 from battle import Battle
 from random import choice, randint
+from utils import clear
+from os import _exit
 
-print("Press any key to start the game")
-getch()
+def main() -> int:
+    # Ask for player's name and pokemon
+    name = input("Enter your name: ")
+    try:
+        selected_pokemon: Pokemon = pokemon[input("Choose your pokemon: ").capitalize()](0, 0)
+    except KeyError:
+        print("Invalid pokemon")
+        return 1
 
-# Ask for player's name and pokemon
-name = input("Enter your name: ")
-selected_pokemon: Pokemon = pokemon[input("Choose your pokemon: ").capitalize()](0, 0)
+    # Create player with the players name and selected pokemon
+    player = Player(name, selected_pokemon)
 
-if selected_pokemon == None:
-    raise Exception("Invalid pokemon")
+    # Pick random values for the level and exp
+    level: int = randint(0, 5)
+    exp: int = randint(0, int((1 * (0.25 * level)) * 100))
 
-# Create player with the players name and selected pokemon
-player = Player(name, selected_pokemon)
+    # Create a random enemy instance
+    enemy = choice(list(pokemon.values()))(level, exp)
 
-level: int = randint(0, 20)
-exp: int = randint(0, int((1 * (0.25 * level)) * 100))
+    # Create a battle instance
+    battle = Battle(player, enemy)
 
-enemy = choice(list(pokemon.values()))(level, exp)
-battle = Battle(player, enemy)
+    # Clear the console
+    clear()
 
-battle.start()
+    # Start the battle
+    match battle.start():
+        case 0:
+            print("You won!")
+        case 1:
+            print("You lost!")
+        case 2:
+            print("You ran away!")
+        case _:
+            print("Invalid input")
+
+            return 2
+
+    return 0
+
+def run():
+    exit_code = main()
+    if exit_code == 1:
+        # Recursion? could cause memory issues if handled incorrectly.
+        run()
+    else:
+        _exit(exit_code)
+
+if __name__ == "__main__":
+    run()
