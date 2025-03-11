@@ -35,24 +35,25 @@ class Battle:
                 return 2
     
     def battle(self) -> int:
-        print(f"You choose to fight with {self.player.get_pokemon().get_name()}!")
+        print(f"You choose to fight with {self.player.pokemon.get_name()}!")
 
         # Start the countdown timer before the battle
         Timer(3).countdown()
         print("Go!")
 
+        clear()
+
         player_turn = True
 
         while-True:
-            clear()
             # It's the players turn to attack
             if player_turn:
                 # Print the player's pokemon's name and HP
                 print(f"Player Pokemon: {self.player.pokemon.get_name()}")
-                print(f"HP: {self.player.pokemon.get_hp()}/{self.player.pokemon.get_max_hp()}")
+                print(f"HP: {self.player.pokemon.hp}/{self.player.pokemon.max_hp}")
                 # Print the enemy's name and HP
                 print(f"Enemy Pokemon: {self.enemy.get_name()}")
-                print(f"HP: {self.enemy.get_hp()}/{self.enemy.get_max_hp()}\n")
+                print(f"HP: {self.enemy.hp}/{self.enemy.max_hp}\n")
 
                 # Ask the player to pick an attack
                 print("Pick an attack:")
@@ -70,9 +71,9 @@ class Battle:
                     attack = self.player.pokemon.attacks[int(getch()) - 1]
 
                     # Attack the target enemy with the selected attack and check if it was successful
-                    if self.player.get_pokemon().attack(self.enemy, attack):
+                    if self.player.pokemon.attack(self.enemy, attack):
                         print("Attack successful!")
-                        print(f"{self.enemy.get_name()} HP: {self.enemy.get_hp()}/{self.enemy.get_max_hp()}")
+                        print(f"{self.enemy.get_name()} HP: {self.enemy.hp}/{self.enemy.max_hp}")
                     else:
                         print("You missed!")
                     
@@ -92,7 +93,7 @@ class Battle:
                 # Attack the player with the selected attack and check if it was successful
                 if self.enemy.attack(self.player.pokemon, attack):
                     print("Attack successful!")
-                    print(f"{self.player.pokemon.get_name()} HP: {self.player.pokemon.get_hp()}/{self.player.pokemon.get_max_hp()}")
+                    print(f"{self.player.pokemon.get_name()} HP: {self.player.pokemon.hp}/{self.player.pokemon.max_hp}")
                 else:
                     print(f"{self.enemy.get_name()} missed!")
                 

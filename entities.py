@@ -184,12 +184,12 @@ class Pikachu(Pokemon):
 
 class Charmander(Pokemon):
     def __init__(self, level: int, exp: int):
-        super().__init__("Charmander", 39, level, exp, (1 * (0.25 * level)) * 100, Fire(), 52, {
-            "Ember": Attack("Ember", 40, 100),
-            "Scratch": Attack("Scratch", 40, 100),
-            "Flamethrower": Attack("Flamethrower", 90, 100),
-            "Inferno": Attack("Inferno", 100, 50),
-        })
+        super().__init__("Charmander", 39, level, exp, (1 * (0.25 * level)) * 100, Fire(), 52, [
+            Attack("Ember", 40, 100),
+            Attack("Scratch", 40, 100),
+            Attack("Flamethrower", 90, 100),
+            Attack("Inferno", 100, 50),
+        ])
 
 pokemon: dict[Pokemon] = {
     "Pikachu": Pikachu,
