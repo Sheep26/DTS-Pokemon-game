@@ -175,7 +175,8 @@ class Player(Entity):
 
 class Pikachu(Pokemon):
     def __init__(self, level: int, exp: int):
-        super().__init__("Pikachu", 35, level, exp, (1 * (0.25 * level)) * 100, Electric(), 55, [
+        # Call the super class constructor with the name, max_hp, level, exp, next_level_exp, pokemon_type, attack_dmg, and attacks
+        super().__init__("Pikachu", int(35 * (level if level > 1 else 1) * (0.25 if level > 1 else 1)), level, exp, 0.25 * level * 100, Electric(), 55 * (level if level > 1 else 1) * (0.25 if level > 1 else 1), [
             Attack("Thunder Shock", 40, 100),
             Attack("Quick Attack", 40, 100),
             Attack("Thunderbolt", 90, 100),
@@ -184,7 +185,8 @@ class Pikachu(Pokemon):
 
 class Charmander(Pokemon):
     def __init__(self, level: int, exp: int):
-        super().__init__("Charmander", 39, level, exp, (1 * (0.25 * level)) * 100, Fire(), 52, [
+        # Call the super class constructor with the name, max_hp, level, exp, next_level_exp, pokemon_type, attack_dmg, and attacks
+        super().__init__("Charmander", int(39 * (level if level > 1 else 1) * (0.25 if level > 1 else 1)), level, exp, 0.25 * level * 100, Fire(), 52 * (level if level > 1 else 1) * (0.25 if level > 1 else 1), [
             Attack("Ember", 40, 100),
             Attack("Scratch", 40, 100),
             Attack("Flamethrower", 90, 100),

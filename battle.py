@@ -2,6 +2,7 @@ from entities import Player, Pokemon
 from battletimer import Timer
 from msvcrt import getch
 from utils import clear
+from time import sleep
 # I would import all from keystrokes.py as "from keystrokes import *" for good practice,
 # But it was causing some issues with built-in python functions.
 import keystrokes
@@ -41,11 +42,19 @@ class Battle:
         Timer(3).countdown()
         print("Go!")
 
-        clear()
-
         player_turn = True
 
         while-True:
+            clear()
+
+            # Return 1 if the player's pokemon is dead signifiying a loss
+            if not self.player.pokemon.is_alive():
+                return 1
+            
+            # Return 0 if the enemy is dead signifying a win
+            if not self.enemy.is_alive():
+                return 0
+
             # It's the players turn to attack
             if player_turn:
                 # Print the player's pokemon's name and HP
@@ -70,12 +79,20 @@ class Battle:
                     # Get the attack the player wants to use from the list of attacks that the player's pokemon has
                     attack = self.player.pokemon.attacks[int(getch()) - 1]
 
+                    clear()
+
+                    print(f"You choose {attack.name}!")
+                    
+                    sleep(1)
+
                     # Attack the target enemy with the selected attack and check if it was successful
                     if self.player.pokemon.attack(self.enemy, attack):
                         print("Attack successful!")
                         print(f"{self.enemy.get_name()} HP: {self.enemy.hp}/{self.enemy.max_hp}")
                     else:
                         print("You missed!")
+                    
+                    sleep(2)
                     
                     player_turn = False
                 # If there is a value error or index error, the player entered an invalid attack
@@ -89,6 +106,8 @@ class Battle:
                 attack = self.enemy.pick_attack()
 
                 print(f"{self.enemy.get_name()} chooses {attack.name}!")
+                    
+                sleep(1)
 
                 # Attack the player with the selected attack and check if it was successful
                 if self.enemy.attack(self.player.pokemon, attack):
@@ -96,6 +115,8 @@ class Battle:
                     print(f"{self.player.pokemon.get_name()} HP: {self.player.pokemon.hp}/{self.player.pokemon.max_hp}")
                 else:
                     print(f"{self.enemy.get_name()} missed!")
+                    
+                sleep(2)
                 
                 player_turn = True
         return 0
