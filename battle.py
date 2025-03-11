@@ -86,11 +86,14 @@ class Battle:
                     sleep(1)
 
                     # Attack the target enemy with the selected attack and check if it was successful
-                    if self.player.pokemon.attack(self.enemy, attack):
+                    attack_data = self.player.pokemon.attack(self.enemy, attack)
+
+                    if attack_data["successful"]:
                         print("Attack successful!")
+                        print(f"Damage dealt: {attack_data['damage']}")
                         print(f"{self.enemy.get_name()} HP: {self.enemy.hp}/{self.enemy.max_hp}")
                     else:
-                        print("You missed!")
+                        print(f"{self.player.pokemon.get_name()} missed!")
                     
                     sleep(2)
                     
@@ -110,8 +113,12 @@ class Battle:
                 sleep(1)
 
                 # Attack the player with the selected attack and check if it was successful
-                if self.enemy.attack(self.player.pokemon, attack):
+
+                attack_data = self.enemy.attack(self.player.pokemon, attack)
+
+                if attack_data["successful"]:
                     print("Attack successful!")
+                    print(f"Damage dealt: {attack_data['damage']}")
                     print(f"{self.player.pokemon.get_name()} HP: {self.player.pokemon.hp}/{self.player.pokemon.max_hp}")
                 else:
                     print(f"{self.enemy.get_name()} missed!")

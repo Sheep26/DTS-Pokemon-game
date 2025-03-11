@@ -130,12 +130,12 @@ class Pokemon(Entity):
         self.pokemon_type = pokemon_type
         self.attack_dmg = attack_dmg
 
-    def attack(self, target: Entity, move: Attack) -> bool:
+    def attack(self, target: Entity, move: Attack) -> dict:
         # Calculate if the attack missed or not
         missed = randint(0, 100) > move.accuracy
         
         # The attack missed, return false to indicate that the attack was not successful
-        if missed: return False
+        if missed: return {"successful": False}
 
         multiplier = 1
 
@@ -157,7 +157,11 @@ class Pokemon(Entity):
         target.take_damage(self.attack_dmg * (move.damage/100) * multiplier)
 
         # Return true to indicate that the attack was successful
-        return True
+        return {
+            "successful": True,
+            "multiplier": multiplier,
+            "damage": self.attack_dmg * (move.damage/100) * multiplier
+        }
 
     def pick_attack(self) -> Attack:
         # Return a random attack from the list of attacks
