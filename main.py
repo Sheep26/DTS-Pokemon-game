@@ -4,6 +4,7 @@ from battle import Battle
 from random import choice, randint
 from utils import clear
 from os import _exit
+from utils import Status
 
 class Main():
     player: Player
@@ -14,26 +15,27 @@ class Main():
         try:
             selected_pokemon: Pokemon = pokemon[input("Choose your pokemon: ").capitalize()](0, 0)
         except KeyError:
+            clear()
             print("Invalid pokemon")
-            return 1
+            return Status.INVALID_POKEMON
 
         # Create player with the players name and selected pokemon
         self.player = Player(name, selected_pokemon)
 
         # Start the battle
         match self.wild_pokemon():
-            case 0:
+            case Status.VICTORY:
                 print("You won!")
-            case 1:
+            case Status.DEFEAT:
                 print("You lost!")
-            case 2:
+            case Status.RUN_AWAY:
                 print("You ran away!")
             case _:
                 print("Invalid input")
 
-                return 2
+                return Status.INVALID_INPUT
 
-        return 0
+        return Status.SUCCESS
 
     def wild_pokemon(self) -> int:
         # Pick random values for the level and exp
@@ -54,7 +56,7 @@ class Main():
 if __name__ == "__main__":
     # We're not using __init__ here because we want to return a value from the main function
     # If the main function wasn't successful try again
-    while Main().main() != 0:
+    while Main().main() != Status.SUCCESS:
         continue
 
     # Exit the program on completion

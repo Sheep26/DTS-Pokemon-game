@@ -3,6 +3,7 @@ from battletimer import Timer
 from msvcrt import getch
 from utils import clear
 from time import sleep
+from utils import Status
 # I would import all from keystrokes.py as "from keystrokes import *" for good practice,
 # But it was causing some issues with built-in python functions.
 import keystrokes
@@ -33,7 +34,7 @@ class Battle:
             case keystrokes.ONE:
                 return self.battle()
             case _:
-                return 2
+                return Status.RUN_AWAY
     
     def battle(self) -> int:
         print(f"You choose to fight with {self.player.pokemon.get_name()}!")
@@ -49,11 +50,11 @@ class Battle:
 
             # Return 1 if the player's pokemon is dead signifiying a loss
             if not self.player.pokemon.is_alive():
-                return 1
+                return Status.DEFEAT
             
             # Return 0 if the enemy is dead signifying a win
             if not self.enemy.is_alive():
-                return 0
+                return Status.VICTORY
 
             # It's the players turn to attack
             if player_turn:
@@ -90,8 +91,8 @@ class Battle:
 
                     if attack_data["successful"]:
                         print("Attack successful!")
-                        print(f"Damage dealt: {attack_data['damage']}")
-                        print(f"{self.enemy.get_name()} HP: {self.enemy.hp}/{self.enemy.max_hp}")
+                        print(f"Damage dealt: {attack_data['damage']:.1f}")
+                        print(f"{self.enemy.get_name()} HP: {self.enemy.hp:.1f}/{self.enemy.max_hp:.1f}")
                     else:
                         print(f"{self.player.pokemon.get_name()} missed!")
                     
@@ -118,12 +119,12 @@ class Battle:
 
                 if attack_data["successful"]:
                     print("Attack successful!")
-                    print(f"Damage dealt: {attack_data['damage']}")
-                    print(f"{self.player.pokemon.get_name()} HP: {self.player.pokemon.hp}/{self.player.pokemon.max_hp}")
+                    print(f"Damage dealt: {attack_data['damage']:.1f}")
+                    print(f"{self.player.pokemon.get_name()} HP: {self.player.pokemon.hp:.1f}/{self.player.pokemon.max_hp:.1f}")
                 else:
                     print(f"{self.enemy.get_name()} missed!")
                     
                 sleep(2)
                 
                 player_turn = True
-        return 0
+        return Status.NULL
