@@ -56,8 +56,9 @@ class Main():
 if __name__ == "__main__":
     # We're not using __init__ here because we want to return a value from the main function
     # If the main function wasn't successful try again
-    while Main().main() != Status.SUCCESS:
-        continue
+    exit_code = Main().main()
+    while exit_code != Status.SUCCESS and exit_code != Status.QUIT:
+        exit_code = Main().main()
 
     # Exit the program on completion
     _exit(0)

@@ -14,3 +14,4 @@ class Status(Enum):
     INVALID_INPUT = 4
     INVALID_POKEMON = 5
     NULL = 6
+    QUIT = 7
