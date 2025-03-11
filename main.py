@@ -5,22 +5,24 @@ from random import choice, randint
 from utils import clear
 from os import _exit
 from utils import Status
+from msvcrt import getch
+import keystrokes
 
 class Main():
     player: Player
 
     def main(self) -> int:
         # Ask for player's name and pokemon
-        name = input("Enter your name: ")
-        try:
-            selected_pokemon: Pokemon = pokemon[input("Choose your pokemon: ").capitalize()](0, 0)
-        except KeyError:
-            clear()
-            print("Invalid pokemon")
-            return Status.INVALID_POKEMON
+        print("Welcome to Pokemon Red!")
+        name = input("Please enter your name: ")
 
-        # Create player with the players name and selected pokemon
-        self.player = Player(name, selected_pokemon)
+        print(f"Welcome {name}")
+        print("Press 1 to start your journey or 2 to quit")
+        match getch():
+            case keystrokes.ONE:
+                return self.start_journey(name)
+            case _:
+                return Status.QUIT
 
         # Start the battle
         match self.wild_pokemon():
@@ -31,11 +33,22 @@ class Main():
             case Status.RUN_AWAY:
                 print("You ran away!")
             case _:
-                print("Invalid input")
+                print("Invalid")
+    
+    def start_journey(self, name) -> int:
+        try:
+            selected_pokemon: Pokemon = pokemon[input("Choose your pokemon: ").capitalize()](0, 0)
+        except KeyError:
+            clear()
+            print("Invalid pokemon")
+            return Status.INVALID_POKEMON
 
-                return Status.INVALID_INPUT
+        # Create player with the players name and selected pokemon
+        self.player = Player(name, selected_pokemon)
 
-        return Status.SUCCESS
+        print(f"{name} you say goodbye to your mum and leave your small sleepy town behind! It's official you are now a pokemon trainer!")
+
+        return Status.ERROR
 
     def wild_pokemon(self) -> int:
         # Pick random values for the level and exp
@@ -59,6 +72,9 @@ if __name__ == "__main__":
     exit_code = Main().main()
     while exit_code != Status.SUCCESS and exit_code != Status.QUIT:
         exit_code = Main().main()
+    
+    if exit_code == Status.QUIT:
+        print("Goodbye!")
 
     # Exit the program on completion
     _exit(0)

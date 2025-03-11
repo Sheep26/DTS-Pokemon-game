@@ -56,7 +56,7 @@ class Battle:
             if not self.enemy.is_alive():
                 return Status.VICTORY
 
-            # It's the players turn to attack
+            # Check if it's the players turn to attack
             if player_turn:
                 # Print the player's pokemon's name and HP
                 print(f"Player Pokemon: {self.player.pokemon.get_name()}")
@@ -127,4 +127,4 @@ class Battle:
                 sleep(2)
                 
                 player_turn = True
-        return Status.NULL
+        return Status.ERROR

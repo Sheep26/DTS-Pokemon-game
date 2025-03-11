@@ -13,5 +13,5 @@ class Status(Enum):
     RUN_AWAY = 3
     INVALID_INPUT = 4
     INVALID_POKEMON = 5
-    NULL = 6
+    ERROR = 6
     QUIT = 7
