@@ -1,5 +1,11 @@
-from enum import Enum
+class Area():
+    name: str
+    dialog: list[str]
 
-class Area(Enum):
-    Home = 0
-    AREA01 = 1
+    def __init__(self, name: str, dialog: list[str]):
+        self.name = name
+        self.dialog = dialog
+
+class Area01(Area):
+    def __init__(self):
+        super().__init__("Area 01", [""])

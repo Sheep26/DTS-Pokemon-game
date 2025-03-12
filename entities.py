@@ -1,6 +1,6 @@
 from enum import Enum
 from random import choice, randint
-from area import Area
+from area import *
 
 class PokemonType:
     name: str
@@ -178,7 +178,7 @@ class Player(Entity):
     def __init__(self, name: str, pokemon: Pokemon):
         self.name = name
         self.pokemon = pokemon
-        self.location = Area.Home
+        self.location = Area01()
 
 class Pikachu(Pokemon):
     def __init__(self, level: int, exp: int):
